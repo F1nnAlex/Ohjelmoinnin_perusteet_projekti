@@ -1,0 +1,23 @@
+13.04.2026 klo 2330
+
+Asiakkaat.py:ssa on nyt seuraavaksi seuraavat funktiot jotka tekevät seuraavaa:
+
+Asiakkaan check in, jossa kysyy nimeä, puhelinnumeroa, sähköpostia, minkä huoneen he haluavat (budget, comfort vai luxury) ja antaa automaattisesti 8-numeroisen numerosarjan asiakasnumeroksi
+Kun asiakas on lisätty, funktio salaa puhelinnumeron ja sähköpostiosoitteen. 
+check out, jossa funktio pyytää customer ID:n minkä järjestelmä teki. Kun asiakas on check outattu, funktio siirtää databasesta aktiivisista asiakkaista entisiin. 
+^ Check out funktio poistaa automaattisesti puhelinnumeron ja sähköpostin. Leikitään että ne on henkilötietoja
+
+view customer:lla voi nähdä asiakkaan tiedot joko nimellä tai ID:llä. Jos on useempi samanniminen asiakas, niin pyytää ID:tä.
+Aluksi se näyttää nimen, ID:n ja huoneen. puhelinro ja sähköposti on salattu, ja terminaali promptaa salausavaimen jotta ne voi nähdä
+Salausavain: "WALLEYE"
+
+List all guests listaa kaikki tän hetkiset asiakkaat ja huoneet
+
+Exit on se mitä mä teen kohta
+
+huoneet 1-50 on budget, 51-99 on comfort, 100-120 on luxury. Kun asiakas check innaa, terminaali antaa automaattisesti random huoneen minkä promptasit 
+(esim luxury = huone 105, saavu sinne pliis)
+
+öööö ei vitunkaa hajuu onks täs midii muut, koodis on semi-hyvin laitettu mitä funktio tekee yms. Seon ehkä vähä spaghetti tho
+
+Ainiijoo database: SQLite3, seon tavallaan tän vscoden sisänen SQL -database. Funktion avuilla luodaan kaikki tarvittavat tablet
