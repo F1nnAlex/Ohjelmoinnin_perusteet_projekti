@@ -49,7 +49,7 @@ def view_available_rooms(get_available_rooms_function):
 
 
 """
-Tuotteisiin ja tuotteiden hallintaan liittyvät toiminnot
+#Tuotteisiin ja tuotteiden hallintaan liittyvät toiminnot
 """
 
 tuote_id = 101
