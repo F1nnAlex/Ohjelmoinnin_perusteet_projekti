@@ -1,7 +1,51 @@
 #vapaat ja varatut hotellihuoneet 
 
+#huonetyypit
 
-#ESIMERKKI Verkkokauppa - Tuotteet, Meidän tapausksessa hotellihuoneet
+"""
+Room management based on ROOM_TYPES
+"""
+
+ROOM_TYPES = {
+    "budget": (1, 50),
+    "comfort": (51, 99),
+    "luxury": (100, 120),
+}
+
+
+
+# Näytä kaikki huoneet
+
+def view_all_rooms():
+    print("\n--- All Rooms ---")
+
+    for room_type, (start, end) in ROOM_TYPES.items():
+        for room_number in range(start, end + 1):
+            print(f"Room {room_number} | Type: {room_type}")
+
+
+
+
+# Näytä vapaat huoneet
+
+def view_available_rooms(get_available_rooms_function):
+    print("\n--- Available Rooms ---")
+
+    for room_type in ROOM_TYPES:
+        available_rooms = get_available_rooms_function(room_type)
+
+        if available_rooms:
+            print(f"\n{room_type.upper()} rooms:")
+            for room in available_rooms:
+                print(f"Room {room}")
+
+
+
+
+
+                
+
+""" #ESIMERKKI Verkkokauppa - Tuotteet, Meidän tapausksessa hotellihuoneet
 
 
 """
@@ -60,4 +104,4 @@ tuotteet.append(uusi_tuote)
 # TODO: listaa kaikki tuotteet
 
 # TODO: muokkaa tuote
-#moi
+#moi """
