@@ -47,24 +47,57 @@ def check_in_out_window():
             return 
         
         #saves the customer's check in to our system
-        result = Check_In_Out.check_in(name,phone, email, room_type)
+        result_message = Check_In_Out.check_in(name, phone, email, room_type)
 
-        result_label.config(text= result, fg="green")
+        if "Success" in result_message:
+            result_label.config(text=result_message,fg="green")
+
+            name_entry.delete(0, tk.END)
+            phone_entry.delete(0, tk.END)
+            email_entry.delete(0, tk.END)
+            room_type_entry.delete(0, tk.END)
+
+        else:
+            result_label.config(text=result_message, fg="red")
+
+        
 
 
-
-#clear boxes
-    name_entry.delete(0, tk.END)
-    phone_entry.delete(0, tk.END)
-    email_entry.delete(0, tk.END)
-    room_type_entry.delete(0, tk.END)
-
-    # --- 3. The Submit Button ---
+    #CHECK IN: The Submit Button
 
     submit_btn = tk.Button(window1, text="Submit Check-In", command=submit_check_in)
     submit_btn.pack(pady=20)
 
     result_label.pack(pady=5)
+
+    #CHECK OUT: button 
+
+    tk.Label(window1, text="----------------------------------", bg="pink").pack(pady=10)
+    tk.Label(window1, text="Check Out", font=("Arial", 12, "bold"), bg="pink").pack()
+
+    tk.Label(window1, text="Customer ID:", bg="pink").pack(pady=(5, 0))
+    checkout_id_entry = tk.Entry(window1)
+    checkout_id_entry.pack()
+
+    checkout_result_label = tk.Label(window1, text="", bg="pink", font=("Arial", 10, "bold"))
+
+    def submit_check_out():
+        c_id = checkout_id_entry.get().strip()
+        if c_id == "":
+            checkout_result_label.config(text="Error: Enter ID!", fg="red")
+            return
+
+        # Kutsutaan Check_In_Out.py:n funktiota
+        viesti = Check_In_Out.check_out(c_id)
+
+        if "Successfully" in viesti:
+            checkout_result_label.config(text=viesti, fg="green")
+            checkout_id_entry.delete(0, tk.END) # Tyhjennetään laatikko
+        else:
+            checkout_result_label.config(text=viesti, fg="red")
+
+    tk.Button(window1, text="Submit Check-Out", command=submit_check_out).pack(pady=10)
+    checkout_result_label.pack()
 
 
 #laajennus napille guest info  

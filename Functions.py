@@ -352,8 +352,8 @@ def view_customer(): #Function to view an active customer's information, either 
     display_active_guest(guest) #If a guest is found, calls the display_active_guest function to show the guest's information.
 
 
-def checkout_guest(): #Function to handle the process of checking out a guest. It prompts the user for the customer's unique ID, verifies if the guest is currently active, moves their information to the checkout_history table, and deletes their record from the active_guests table while retaining a historical record of their stay.
-    print("\n--- Check Out Guest ---")
+def checkout_guest(customer_id): #Function to handle the process of checking out a guest. It prompts the user for the customer's unique ID, verifies if the guest is currently active, moves their information to the checkout_history table, and deletes their record from the active_guests table while retaining a historical record of their stay.
+
     customer_id = input("Enter the unique customer ID for checkout: ").strip() #Asks the user to enter the unique customer ID of the guest that is checking out. This ID is used to identify the specific guest in the database for the checkout process.
 
     guest = find_active_guest_by_id(customer_id) #Calls the find_active_guest_by_id function to search for an active guest matching the provided customer ID. The function returns the guest's information as a tuple if found, or None if no active guest is found with that ID.
@@ -376,10 +376,8 @@ def checkout_guest(): #Function to handle the process of checking out a guest. I
     conn.commit() #Commit the changes to the database to save the checkout history and remove the guest from the active_guests table
     conn.close() #Close the connection to the database
 
-    print(f"Guest '{name}' with Customer ID {customer_id} has been checked out.") #Prints a message confirming that the guest has been checked out, including their name and customer ID for reference.
-    print("Private information deleted. Historical record retained.") #Confirms that the guest's private information has been deleted from the active_guests table.
-
-
+    return True
+    
 def list_active_guests(): #Function to list all currently active guests in the hotel. It retrieves the guest information from the active_guests table and displays it in a readable format, showing the customer ID, name, room type, and room number for each active guest.
     conn = get_connection() #Establish a connection to the database
     cursor = conn.cursor()
