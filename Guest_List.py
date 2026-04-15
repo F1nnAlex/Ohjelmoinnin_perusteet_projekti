@@ -1,78 +1,16 @@
-#VERKKOKAUPPA ESIMERKKI - Tilaukset , meidän tapauksessa varaukset
+import Funtions
 
 
-# bookings.py
+while True:
+    print("\n========== HOTEL CUSTOMER MANAGEMENT ==========")
+    print("1. List active guests")
+    print("2. Exit")
 
-"""
-Booking module
-Connects customers and rooms
-"""
-
-import Customers
-import Hotel_Rooms
-
-
-# -------------------------
-# Tee varaus (check-in)
-# -------------------------
-def book_room():
-    print("\n--- Book a Room ---")
-
-    # Näytä vapaat huoneet
-    Hotel_Rooms.view_available_rooms(Customers.get_available_rooms)
-
-    # Kutsutaan asiakkaan check-in funktiota
-    Customers.assign_guest()
-
-    print("Room booking completed.")
-
-
-# -------------------------
-# Check-out
-# -------------------------
-def checkout():
-    print("\n--- Checkout ---")
-
-    Customers.checkout_guest()
-
-    print("Checkout completed.")
-
-
-# -------------------------
-# Näytä kaikki aktiiviset varaukset
-# -------------------------
-def view_bookings():
-    print("\n--- Active Bookings ---")
-
-    Customers.list_active_guests()
-
-
-# -------------------------
-# Etsi varaus
-# -------------------------
-def find_booking():
-    print("\n--- Find Booking ---")
-
-    Customers.view_customer()
-
-
-"""
-Tilaukset ja niiden hallinta
-==============================
-
-Ominaisuudet:
-* lisää uusi tilaus
-* poista tilaus
-* hae tilauksen tiedot
-
-import Tuotteet, Asiakkaat
-
-tuotteet = Tuotteet.tuotteet
-print(tuotteet[0])
-
-tilaus = {
-    "asiakas_ID": 101,
-    "tuote_ID:t": [101, 102], #kokoelma tuotteita, TV ja läppäri 
-    # "hinta" :  #miten toteutetaan? Miten voi tarkistaa, että mikä tuote 101, tai 102? Mitkä oli niiden hinnat?
-}
-"""
+    choice = input("Choose an option: ").strip() #Asks the user to choose an option from the main menu by entering a number corresponding to the desired action. The input is stripped of leading and trailing whitespace for cleaner processing.
+    if choice == "1":
+        Funtions.list_active_guests()
+    elif choice == "2":
+        print("Exiting system.")
+        break
+    else:
+        print("Invalid option. Please try again.") 
