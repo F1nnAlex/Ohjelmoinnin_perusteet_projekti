@@ -1,6 +1,6 @@
 import Funtions
 
-
+Funtions.setup_database()
 while True:
     print("\n========== HOTEL CUSTOMER MANAGEMENT ==========")
     print("1. List active guests")
