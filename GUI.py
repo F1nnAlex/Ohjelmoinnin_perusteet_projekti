@@ -45,12 +45,15 @@ def check_in_out_window():
             # Show an error and stop the function right here using 'return'
             result_label.config(text="Error: All fields must be filled!", fg="red")
             return 
+        
+        #saves the customer's check in to our system
+        result = Check_In_Out.check_in(name,phone, email, room_type)
 
-        result_message = Check_In_Out.process_check_in(name, phone, email, room_type)
-
-        result_label.config(text=result_message, fg="green")
+        result_label.config(text= result, fg="green")
 
 
+
+#clear boxes
     name_entry.delete(0, tk.END)
     phone_entry.delete(0, tk.END)
     email_entry.delete(0, tk.END)
@@ -64,7 +67,7 @@ def check_in_out_window():
     result_label.pack(pady=5)
 
 
-#laahennus napille guest info  
+#laajennus napille guest info  
 
 def guest_info_window():
     window2 = tk.Toplevel(root)
