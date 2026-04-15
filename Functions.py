@@ -149,25 +149,21 @@ def get_available_rooms(room_type: str) -> List[int]:
 #------------------------------------------------------------------------------
 # Hotel customer management functions
 #------------------------------------------------------------------------------
-def assign_guest(): #Function to handle the process of checking in a guest and assigning them to a room. It prompts the user for customer information, validates the input, checks for available rooms, encrypts private information, and stores the guest data in the active_guests table of the database.
+def assign_guest(name, phone, email, room_type): #Function to handle the process of checking in a guest and assigning them to a room. It prompts the user for customer information, validates the input, checks for available rooms, encrypts private information, and stores the guest data in the active_guests table of the database.
     print("\n--- Check In / Assign Guest to Room ---")
 
-    name = input("Enter customer name: ").strip() #Prompt the user to enter the customer's name, .strip removes any leading or trailing whitespace from the input
     if not name:
         print("Name cannot be empty.")
         return
 
-    phone = input("Enter phone number: ").strip()
     if not phone:
         print("Phone number cannot be empty.")
         return
 
-    email = input("Enter email: ").strip()
     if not email:
         print("Email cannot be empty.")
         return
 
-    room_type = input("Enter room type (budget / comfort / luxury): ").strip().lower() #Asks the user for the desired room type, .strip().lower() converts the input to lowercase for case-insensitive comparison
     if room_type not in ROOM_TYPES:
         print("Invalid room type.")
         return
