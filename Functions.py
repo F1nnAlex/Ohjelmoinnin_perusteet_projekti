@@ -190,9 +190,7 @@ def assign_guest(name, phone, email, room_type): #Function to handle the process
     conn.commit() #Commit the changes to the database to save the new guest's information
     conn.close()
 
-    print("\nGuest checked in successfully.")
-    print(f"Assigned room number: {room_number}")
-    print(f"Customer ID: {customer_id}") #Prints the new customers assigned room number and unique customer ID
+    return customer_id, room_number
 
 
 def find_active_guest_by_id(customer_id: str) -> Optional[Tuple]: #Function to find an active customer using their assigned ID
