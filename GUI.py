@@ -102,7 +102,7 @@ def check_in_out_window():
     checkout_result_label.pack()
 
 
-#laajennus napille guest info  
+#extension fot guest info button  
 
 def guest_info_window():
     window2 = tk.Toplevel(root)
@@ -110,11 +110,27 @@ def guest_info_window():
     window2.geometry("500x250")
     window2.configure(bg="pink")
 
+#guest info extension window content
+
+    tk.Label(window2, text="----------------------------------", bg="pink").pack(pady=1)
+    tk.Label(window2, text="Guest Info", font=("Arial", 12, "bold"), bg="pink").pack()
+    tk.Label(window2, text="----------------------------------", bg="pink").pack(pady=1)
+
+
+
+#extension for guest list button 
+
 def guest_list_window():
     window3 = tk.Toplevel(root)
     window3.title("Hotel System")
     window3.geometry("500x250")
     window3.configure(bg="pink")
+
+#guest list extension window content
+
+    tk.Label(window3, text="----------------------------------", bg="pink").pack(pady=1)
+    tk.Label(window3, text="Guest List", font=("Arial", 12, "bold"), bg="pink").pack()
+    tk.Label(window3, text="----------------------------------", bg="pink").pack(pady=1)
 
 
 # GUI window:
