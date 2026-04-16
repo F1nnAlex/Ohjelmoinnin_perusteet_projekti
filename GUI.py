@@ -9,10 +9,12 @@ import Check_In_Out#, Guest_Info, Guest_List
 def check_in_out_window():
     window1 = tk.Toplevel(root)
     window1.title("Hotel System")
-    window1.geometry("500x350")
+    window1.geometry("500x600")
     window1.configure(bg="pink")
 
 #tektboxit
+    tk.Label(window1, text="----------------------------------", bg="pink").pack(pady=10)
+    tk.Label(window1, text="Check In", font=("Arial", 12, "bold"), bg="pink").pack()
 
     tk.Label(window1, text="Name:", bg="pink").pack(pady=(10, 0))
     name_entry = tk.Entry(window1)
@@ -96,7 +98,7 @@ def check_in_out_window():
         else:
             checkout_result_label.config(text=viesti, fg="red")
 
-    tk.Button(window1, text="Submit Check-Out", command=submit_check_out).pack(pady=10)
+    tk.Button(window1, text="Submit Check-Out", command=submit_check_out).pack(pady=20)
     checkout_result_label.pack()
 
 
