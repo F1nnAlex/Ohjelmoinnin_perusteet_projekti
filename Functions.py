@@ -149,25 +149,21 @@ def get_available_rooms(room_type: str) -> List[int]:
 #------------------------------------------------------------------------------
 # Hotel customer management functions
 #------------------------------------------------------------------------------
-def assign_guest(): #Function to handle the process of checking in a guest and assigning them to a room. It prompts the user for customer information, validates the input, checks for available rooms, encrypts private information, and stores the guest data in the active_guests table of the database.
+def assign_guest(name, phone, email, room_type): #Function to handle the process of checking in a guest and assigning them to a room. It prompts the user for customer information, validates the input, checks for available rooms, encrypts private information, and stores the guest data in the active_guests table of the database.
     print("\n--- Check In / Assign Guest to Room ---")
 
-    name = input("Enter customer name: ").strip() #Prompt the user to enter the customer's name, .strip removes any leading or trailing whitespace from the input
     if not name:
         print("Name cannot be empty.")
         return
 
-    phone = input("Enter phone number: ").strip()
     if not phone:
         print("Phone number cannot be empty.")
         return
 
-    email = input("Enter email: ").strip()
     if not email:
         print("Email cannot be empty.")
         return
 
-    room_type = input("Enter room type (budget / comfort / luxury): ").strip().lower() #Asks the user for the desired room type, .strip().lower() converts the input to lowercase for case-insensitive comparison
     if room_type not in ROOM_TYPES:
         print("Invalid room type.")
         return
@@ -194,9 +190,7 @@ def assign_guest(): #Function to handle the process of checking in a guest and a
     conn.commit() #Commit the changes to the database to save the new guest's information
     conn.close()
 
-    print("\nGuest checked in successfully.")
-    print(f"Assigned room number: {room_number}")
-    print(f"Customer ID: {customer_id}") #Prints the new customers assigned room number and unique customer ID
+    return customer_id, room_number
 
 
 def find_active_guest_by_id(customer_id: str) -> Optional[Tuple]: #Function to find an active customer using their assigned ID
@@ -358,8 +352,8 @@ def view_customer(): #Function to view an active customer's information, either 
     display_active_guest(guest) #If a guest is found, calls the display_active_guest function to show the guest's information.
 
 
-def checkout_guest(): #Function to handle the process of checking out a guest. It prompts the user for the customer's unique ID, verifies if the guest is currently active, moves their information to the checkout_history table, and deletes their record from the active_guests table while retaining a historical record of their stay.
-    print("\n--- Check Out Guest ---")
+def checkout_guest(customer_id): #Function to handle the process of checking out a guest. It prompts the user for the customer's unique ID, verifies if the guest is currently active, moves their information to the checkout_history table, and deletes their record from the active_guests table while retaining a historical record of their stay.
+
     customer_id = input("Enter the unique customer ID for checkout: ").strip() #Asks the user to enter the unique customer ID of the guest that is checking out. This ID is used to identify the specific guest in the database for the checkout process.
 
     guest = find_active_guest_by_id(customer_id) #Calls the find_active_guest_by_id function to search for an active guest matching the provided customer ID. The function returns the guest's information as a tuple if found, or None if no active guest is found with that ID.
@@ -382,10 +376,8 @@ def checkout_guest(): #Function to handle the process of checking out a guest. I
     conn.commit() #Commit the changes to the database to save the checkout history and remove the guest from the active_guests table
     conn.close() #Close the connection to the database
 
-    print(f"Guest '{name}' with Customer ID {customer_id} has been checked out.") #Prints a message confirming that the guest has been checked out, including their name and customer ID for reference.
-    print("Private information deleted. Historical record retained.") #Confirms that the guest's private information has been deleted from the active_guests table.
-
-
+    return True
+    
 def list_active_guests(): #Function to list all currently active guests in the hotel. It retrieves the guest information from the active_guests table and displays it in a readable format, showing the customer ID, name, room type, and room number for each active guest.
     conn = get_connection() #Establish a connection to the database
     cursor = conn.cursor()
@@ -412,31 +404,3 @@ def list_active_guests(): #Function to list all currently active guests in the h
 
 def main_menu(): #Function to display the main menu of the hotel customer management system
     setup_database()
-
-    while True:
-        print("\n========== HOTEL CUSTOMER MANAGEMENT ==========")
-        print("1. Check in / assign guest to room")
-        print("2. Check out guest")
-        print("3. View customer")
-        print("4. List active guests")
-        print("5. Exit")
-
-        choice = input("Choose an option: ").strip() #Asks the user to choose an option from the main menu by entering a number corresponding to the desired action. The input is stripped of leading and trailing whitespace for cleaner processing.
-
-        if choice == "1":
-            assign_guest()
-        elif choice == "2":
-            checkout_guest()
-        elif choice == "3":
-            view_customer()
-        elif choice == "4":
-            list_active_guests()
-        elif choice == "5":
-            print("Exiting system.")
-            break
-        else:
-            print("Invalid option. Please try again.") 
-
-
-if __name__ == "__main__":
-    main_menu() #This line checks if the script is being run directly (as the main program) and if so, it calls the main_menu function to start the hotel customer management system.
