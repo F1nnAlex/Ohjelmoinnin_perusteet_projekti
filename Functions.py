@@ -21,7 +21,6 @@ MAX_ATTEMPTS = 3 #MAX 3 attempts before access is denied
 def encryption_parameters(char: str, key_char: str) -> str: #Shift plaintext by key character using modular arithmetic
     return chr((ord(char) + ord(key_char)) % 65536)
 
-
 def decryption_parameters(char: str, key_char: str) -> str: #Reverse shift ciphertext by key character using modular arithmetic
     return chr((ord(char) - ord(key_char)) % 65536)
 
@@ -401,6 +400,14 @@ def list_active_guests(): #Function to list all currently active guests in the h
             f"Customer ID: {row[0]} | Name: {row[1]} | Room Type: {row[2]} | Room Number: {row[3]}" #Prints the customer ID, name, room type, and room number for each active guest in a formatted string for easy reading.
         )
 
+def get_all_active_guests():
+    """Hakee kaikki vieraat tietokannasta listana."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM active_guests ORDER BY room_number")
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
 
 def main_menu(): #Function to display the main menu of the hotel customer management system
     setup_database()

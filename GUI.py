@@ -1,8 +1,8 @@
 import tkinter as tk 
-
+import Functions
 from tkinter import *
-
-import Check_In_Out#, Guest_Info, Guest_List
+from tkinter import ttk, simpledialog # Nämä tarvitaan taulukkoon ja admin-ikkunaan
+import Check_In_Out, Guest_Info, Guest_List
 
 #laajennus napille checkin/out
 
@@ -102,12 +102,12 @@ def check_in_out_window():
     checkout_result_label.pack()
 
 
-#extension fot guest info button  
+#extension for guest info button  
 
 def guest_info_window():
     window2 = tk.Toplevel(root)
     window2.title("Hotel System")
-    window2.geometry("500x250")
+    window2.geometry("500x300")
     window2.configure(bg="pink")
 
 #guest info extension window content
@@ -117,13 +117,43 @@ def guest_info_window():
     tk.Label(window2, text="----------------------------------", bg="pink").pack(pady=1)
 
 
+    search_mode = tk.StringVar(value="Name")
+    mode_frame = tk.Frame(window2, bg="pink")
+    mode_frame.pack(pady=5)
+    tk.Radiobutton(mode_frame, text="Name", variable=search_mode, value="Name", bg="pink").pack(side=LEFT, padx=10)
+    tk.Radiobutton(mode_frame, text="ID", variable=search_mode, value="ID", bg="pink").pack(side=LEFT, padx=10)
+
+    tk.Label(window2, text="Enter name or ID number:", bg="pink").pack(pady=(10, 0))
+    search_entry = tk.Entry(window2, width=30)
+    search_entry.pack(pady=5)
+
+    result_display = tk.Label(window2, text="", bg="pink", justify=LEFT, font=("Arial", 10))
+    
+    def perform_search():
+        term = search_entry.get().strip()
+        if not term:
+            result_display.config(text="Enter valid search!", fg="red")
+            return
+        
+        # KUTSU NYT GUEST_INFO TIEDOSTOA:
+        info = Guest_Info.get_guest_details(term, search_mode.get())
+        
+        if "Virhe" in info:
+            result_display.config(text=info, fg="red")
+        else:
+            result_display.config(text=info, fg="black")
+
+    tk.Button(window2, text="Hae tiedot", command=perform_search).pack(pady=15)
+    result_display.pack(pady=10)
+
+
 
 #extension for guest list button 
 
 def guest_list_window():
     window3 = tk.Toplevel(root)
     window3.title("Hotel System")
-    window3.geometry("500x250")
+    window3.geometry("850x500")
     window3.configure(bg="pink")
 
 #guest list extension window content
@@ -131,6 +161,66 @@ def guest_list_window():
     tk.Label(window3, text="----------------------------------", bg="pink").pack(pady=1)
     tk.Label(window3, text="Guest List", font=("Arial", 12, "bold"), bg="pink").pack()
     tk.Label(window3, text="----------------------------------", bg="pink").pack(pady=1)
+
+    # --- Yläpalkki Admin-napille ---
+    top_bar = tk.Frame(window3, bg="pink")
+    top_bar.pack(fill=X, padx=10, pady=5)
+
+    def open_admin_mode():
+        # Kysytään salasanaa (WALLEYE)
+        key = simpledialog.askstring("Admin Login", "Anna salauksen purkuavain:", parent=window3)
+        if key == "WALLEYE":
+            refresh_table(key)
+        elif key is not None:
+            status_label.config(text="Väärä avain!", fg="red")
+
+    admin_btn = tk.Button(top_bar, text="Admin Login", command=open_admin_mode)
+    admin_btn.pack(side=LEFT)
+
+    tk.Label(window3, text="Kaikki aktiiviset vieraat", font=("Arial", 14, "bold"), bg="pink").pack(pady=5)
+    
+    # --- Taulukko (Treeview) ---
+    columns = ("id", "name", "phone", "email", "type", "room")
+    tree = ttk.Treeview(window3, columns=columns, show="headings")
+
+    # Sarakkeiden nimet
+    tree.heading("id", text="Asiakas ID")
+    tree.heading("name", text="Nimi")
+    tree.heading("phone", text="Puhelin")
+    tree.heading("email", text="Sähköposti")
+    tree.heading("type", text="Huonetyyppi")
+    tree.heading("room", text="Huone #")
+
+    # Sarakkeiden leveydet
+    tree.column("id", width=100)
+    tree.column("name", width=150)
+    tree.column("phone", width=120)
+    tree.column("email", width=200)
+    tree.column("type", width=100)
+    tree.column("room", width=70)
+
+    tree.pack(expand=True, fill=BOTH, padx=20, pady=10)
+
+    status_label = tk.Label(window3, text="Kirjaudu sisään nähdäksesi yhteystiedot", bg="pink", font=("Arial", 9))
+    status_label.pack(pady=5)
+
+    # --- Funktion taulukon päivittämiseen ---
+    def refresh_table(key=None):
+        # Tyhjennetään vanha sisältö
+        for item in tree.get_children():
+            tree.delete(item)
+        
+        # Haetaan uusi lista Guest_List tiedostosta
+        vieraat = Guest_List.fetch_guest_list_data(key)
+        
+        for v in vieraat:
+            tree.insert("", tk.END, values=v)
+        
+        if key:
+            status_label.config(text="Admin-tila aktiivinen: Tiedot purettu", fg="green")
+
+    # Täytetään taulukko ensimmäisen kerran (salattuna)
+    refresh_table()
 
 
 # GUI window:
@@ -156,7 +246,7 @@ btn3.pack(pady=10)
 
 
 
-
+Functions.setup_database()
 root.mainloop()
 
 
